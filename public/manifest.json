@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Simple Notes app",
+  "version": "1.0",
+  "description": "Add, view, and delete simple notes",
+  "action": {
+    "default_popup": "index.html"
+  },
+  "permissions": ["storage"]
+}

@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+html, body {
+    min-width: 450px;
+    min-height: 600px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border-radius: 50px; */
+}
+
+#root {
+    min-width: 100%;
+    min-height: 100vh;
+    border: 3px solid red;
+}
