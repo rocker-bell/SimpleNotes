@@ -1,4 +1,5 @@
 {
+  "homepage": "https://rocker-bell.github.io/SimpleNotes",
   "name": "simple-notes",
   "private": true,
   "version": "0.0.0",
@@ -7,6 +8,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "deploy": "gh-pages -d dist",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -14,6 +16,7 @@
     "@tailwindcss/vite": "^4.1.16",
     "alert-handler-lite": "file:../alert-test",
     "ethers": "^6.16.0",
+    "gh-pages": "^6.3.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-router-dom": "^7.13.1",

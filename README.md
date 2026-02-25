@@ -1,4 +1,3 @@
-
 # SimpleNotes
 
 Web3 Notes Application built on Hedera Hashgraph.

@@ -102,7 +102,7 @@ const DappStructure = () => {
           <a href="#" className="footer-link">GitHub</a>
           <a href="#" className="footer-link">Support</a>
         </div>
-        <p className="copyright">© 2024 SimpleNotes. All rights reserved.</p>
+        <p className="copyright">© 2026 SimpleNotes. All rights reserved.</p>
       </footer>
     </div>
   );

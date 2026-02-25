@@ -32,3 +32,12 @@ Connect Hedera Account
 Account ID (0.0.x)
 3030020100300706052b8104000a042204201dcb37fda6ba09675deb41abfbb52daceb2ed4c1c1528cc5733a6619dfa210c0
 Check Balance
+
+
+
+
+Create Hedera Account
+Create Account
+Account ID: 0.0.8028578
+
+Private Key: 3030020100300706052b8104000a042204201ca1db3564ad05b427af6b2d5c1930a9d8817a92bac1facb9d0c4a15521c7821
