@@ -1244,13 +1244,15 @@ useEffect(() => {
       <h2>Chatbox DApp</h2>
       <div className="status">{status}</div>
 
-
+    <div className="registration-status">
       <h4>Registration Status</h4>
 {isRegistered ? (
   <span>✅ Registered</span>
 ) : (
   <button onClick={registerUser}>Register User</button>
 )}
+
+</div>
 
 <h5>Token Balance: {balance}</h5>
       <input
@@ -1266,21 +1268,47 @@ useEffect(() => {
       />
       <button onClick={sendMessage}>Send Message</button>
 
-      <div className="messages-section">
+      {/* <div className="messages-section">
         <h3>Received Messages</h3>
-        {receivedMessages.map((msg, idx) => (
-          <div key={idx} className="message-card">
-            [{msg.timestamp}] From: {msg.sender} - {msg.content}
-          </div>
-        ))}
+{receivedMessages.map((msg, idx) => (
+  <div key={idx} className="message-card received-message">
+    <b>{msg.sender}</b>
+    <p>{msg.content}</p>
+    <small>{msg.timestamp}</small>
+  </div>
+))}
 
-        <h3>Sent Messages</h3>
-        {sentMessages.map((msg, idx) => (
-          <div key={idx} className="message-card">
-            [{msg.timestamp}] To: {msg.recipient} - {msg.content}
-          </div>
-        ))}
-      </div>
+<h3>Sent Messages</h3>
+{sentMessages.map((msg, idx) => (
+  <div key={idx} className="message-card sent-message">
+    <b>To: {msg.recipient}</b>
+    <p>{msg.content}</p>
+    <small>{msg.timestamp}</small>
+  </div>
+))}
+      </div> */}
+
+      <div className="messages-section">
+
+  <h3>Received Messages</h3>
+  {receivedMessages.slice(-3).map((msg, idx) => (
+    <div key={idx} className="message-card received-message">
+      <b>{msg.sender}</b>
+      <p>{msg.content}</p>
+      <small>{msg.timestamp}</small>
+    </div>
+  ))}
+
+  <h3>Sent Messages</h3>
+  {sentMessages.slice(-3).map((msg, idx) => (
+    <div key={idx} className="message-card sent-message">
+      <b>To: {msg.recipient}</b>
+      <p>{msg.content}</p>
+      <small>{msg.timestamp}</small>
+    </div>
+  ))}
+
+</div>
     </div>
   );
 };
