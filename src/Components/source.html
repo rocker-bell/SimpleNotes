@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mailer DApp on Hedera (EVM)</title>
+</head>
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    button {
+      padding: 10px 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    #messages {
+      margin-top: 30px;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    li {
+      background: #f9f9f9;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-left: 4px solid #4CAF50;
+    }
+
+    #status {
+      margin: 10px 0;
+      font-weight: bold;
+    }
+</style>
+<body>
+  <h1>Mailer DApp on Hedera (EVM)</h1>
+
+  <button id="connectButton">Connect MetaMask</button>
+  <div id="status">Not connected</div>
+
+  <h2>Send Message</h2>
+  <input type="text" id="recipientAddress" placeholder="Recipient (0x...)" />
+  <textarea id="messageContent" placeholder="Message"></textarea>
+  <button id="sendMessageButton">Send Message</button>
+
+  <ul id="sentMessages"></ul>
+ <ul id="receivedMessages"></ul>
+
+
+
+  <!-- Import Ethers.js -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
+
+  
+<script>
+  const RPC_URL = "https://testnet.hashio.io/api";
+  const CONTRACT_ADDRESS = "0x5cad1ddf1e72fd84e9ce9389db0c5bd4cf85eb51";
+
+const ABI = [
+  "function sendMessage(address recipient, string message) public",
+  "function getSentMessages(address sender) view returns (tuple(uint256 timestamp, address sender, address recipient, string content)[])",
+  "function getReceivedMessages(address user) view returns (tuple(uint256 timestamp, address sender, address recipient, string content)[])",
+  "function registeredUsers(address) view returns (bool)",
+  "function registerUser() public"
+];
+
+
+  let provider, signer, contract;
+
+  async function switchToHederaTestnet() {
+    try {
+      await window.ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [{
+          chainId: "0x128", // 296 in hex
+          chainName: "Hedera Testnet",
+          nativeCurrency: { name: "HBAR", symbol: "HBAR", decimals: 18 },
+          rpcUrls: ["https://testnet.hashio.io/api"],
+          blockExplorerUrls: ["https://hashscan.io/testnet"]
+        }]
+      });
+      document.getElementById("status").innerText = "Switched to Hedera Testnet ✅";
+    } catch (err) {
+      console.error("Error switching to Hedera:", err);
+    }
+  }
+
+  async function connectMetaMask() {
+    if (!window.ethereum) {
+      alert("Please install MetaMask.");
+      return;
+    }
+
+    try {
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      provider = new ethers.BrowserProvider(window.ethereum);
+      const network = await provider.getNetwork();
+
+      if (network.chainId !== 296n) {
+        document.getElementById("status").innerText = "Wrong network. Switching to Hedera Testnet...";
+        await switchToHederaTestnet();
+        return;
+      }
+
+      signer = await provider.getSigner();
+      const userAddress = await signer.getAddress();
+      contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
+      document.getElementById("status").innerText = `Connected ✅ ${userAddress}`;
+
+      const isRegistered = await contract.registeredUsers(userAddress);
+      if (!isRegistered) {
+        const tx = await contract.registerUser();
+        await tx.wait();
+        console.log("User registered successfully!");
+      }
+
+      await loadMessages(userAddress);
+    } catch (err) {
+      console.error(err);
+      document.getElementById("status").innerText = "MetaMask connection failed.";
+    }
+  }
+
+  async function loadMessages(userAddress) {
+    if (!contract) return;
+
+    try {
+      const received = await contract.getReceivedMessages(userAddress);
+      const sent = await contract.getSentMessages(userAddress);
+
+      const receivedList = document.getElementById("receivedMessages");
+      const sentList = document.getElementById("sentMessages");
+      receivedList.innerHTML = "";
+      sentList.innerHTML = "";
+
+      received.forEach((msg) => {
+        const item = document.createElement("li");
+        const timestamp = new Date(Number(msg.timestamp) * 1000).toLocaleString();
+        item.textContent = `[${timestamp}] From: ${msg.sender} - ${msg.content}`;
+        receivedList.appendChild(item);
+      });
+
+      sent.forEach((msg) => {
+        const item = document.createElement("li");
+        const timestamp = new Date(Number(msg.timestamp) * 1000).toLocaleString();
+        item.textContent = `[${timestamp}] To: ${msg.recipient} - ${msg.content}`;
+        sentList.appendChild(item);
+      });
+
+    } catch (err) {
+      console.error("Load messages error:", err);
+    }
+  }
+
+  // async function sendMessage() {
+  //   if (!contract) {
+  //     alert("Connect MetaMask first.");
+  //     return;
+  //   }
+
+  //   const recipient = document.getElementById("recipientAddress").value;
+  //   const message = document.getElementById("messageContent").value;
+
+  //   if (!recipient || !message) {
+  //     alert("Please enter recipient and message.");
+  //     return;
+  //   }
+
+  //   try {
+  //     const tx = await contract.sendMessage(recipient, message);
+  //     document.getElementById("status").innerText = "Sending transaction...";
+  //     await tx.wait();
+  //     document.getElementById("status").innerText = "Message sent!";
+  //     document.getElementById("messageContent").value = "";
+
+  //     const userAddress = await signer.getAddress();
+  //     await loadMessages(userAddress);
+  //   } catch (err) {
+  //     console.error("Error sending message:", err);
+  //     alert("Error sending message");
+  //   }
+  // }
+
+   async function sendMessage() {
+    if (!contract) {
+      alert("Connect MetaMask first.");
+      return;
+    }
+
+    let recipient = document.getElementById("recipientAddress").value.trim();
+    const message = document.getElementById("messageContent").value;
+
+    if (!recipient || !message) {
+      alert("Please enter recipient and message.");
+      return;
+    }
+
+    // ✅ CRITICAL FIX: validate address (prevents ENS lookup)
+    if (!ethers.isAddress(recipient)) {
+      alert("Invalid recipient address. ENS is not supported on Hedera.");
+      return;
+    }
+
+    try {
+      const tx = await contract.sendMessage(recipient, message);
+      document.getElementById("status").innerText = "Sending transaction...";
+      await tx.wait();
+
+      document.getElementById("status").innerText = "Message sent!";
+      document.getElementById("messageContent").value = "";
+
+      const userAddress = await signer.getAddress();
+      await loadMessages(userAddress);
+
+    } catch (err) {
+      console.error("Error sending message:", err);
+      alert(err.reason || err.message || "Transaction failed");
+    }
+  }
+
+  document.getElementById("connectButton").addEventListener("click", connectMetaMask);
+  document.getElementById("sendMessageButton").addEventListener("click", sendMessage);
+</script>
+
+
+</body>
+
+</html>
+
+
+
+<!-- // Add these to your existing Mailer contract
+
+// Get count of sent messages for a user
+function getSentMessagesCount(address user) public view returns (uint256) {
+    return sentMessages[user].length;
+}
+
+// Get a single sent message by index
+function getSentMessage(address user, uint256 index) public view returns (
+    uint256 timestamp,
+    address sender,
+    address recipient,
+    string memory content
+) {
+    require(index < sentMessages[user].length, "Index out of bounds");
+    Message memory m = sentMessages[user][index];
+    return (m.timestamp, m.sender, m.recipient, m.content);
+}
+
+// Get count of received messages for a user
+function getReceivedMessagesCount(address user) public view returns (uint256) {
+    return receivedMessages[user].length;
+}
+
+// Get a single received message by index
+function getReceivedMessage(address user, uint256 index) public view returns (
+    uint256 timestamp,
+    address sender,
+    address recipient,
+    string memory content
+) {
+    require(index < receivedMessages[user].length, "Index out of bounds");
+    Message memory m = receivedMessages[user][index];
+    return (m.timestamp, m.sender, m.recipient, m.content);
+} -->

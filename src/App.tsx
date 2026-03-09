@@ -74,6 +74,7 @@
 // export default App;
 
 import { useState } from "react";
+
 import { Routes, Route } from "react-router-dom";
 import DappStructure from "./Components/DappStructure.tsx";
 import CreateHederaAccount from "./Components/CreateAccount.tsx";
@@ -113,7 +114,11 @@ const App = () => {
           path="/todoApp"
           element={<TodoApp accountId={accountId} privateKey={privateKey}  evmAddress={evmAddress} />}
         />
-        <Route path="chatbox" element={<Chatbox/>} />
+        {/* <Route path="chatbox" element={<Chatbox/>} /> */}
+          <Route
+          path="/chatbox"
+          element={<Chatbox accountId={accountId} privateKey={privateKey} evmAddress={evmAddress} />}
+        />
       </Routes>
     </>
   );
