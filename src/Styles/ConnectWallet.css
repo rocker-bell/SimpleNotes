@@ -103,6 +103,7 @@
   justify-content: flex-start;
   align-items: center;
   border: 1px solid black;
+  gap: 30px;
 }
 
 .app-box {

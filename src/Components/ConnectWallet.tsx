@@ -2985,6 +2985,10 @@ const [hasConnected, setHasConnected] = useState(false);
     navigate("/chatbox")
   }
 
+  const handleDexScannLink = () => {
+    navigate("/DexScan")
+  }
+
   // -------------------- Render --------------------
   return (
     <div className="container">
@@ -3058,6 +3062,10 @@ const [hasConnected, setHasConnected] = useState(false);
         <div className="app-box" onClick={handlechatboxLink}>
             <img width="48" height="48" src="https://img.icons8.com/fluency/48/speech-bubble-with-dots--v1.png" alt="speech-bubble-with-dots--v1"/>
           <p className="app-title">chatbox</p>
+        </div>
+         <div className="app-box" onClick={handleDexScannLink}>
+            <img width="48" height="48" src="https://img.icons8.com/liquid-glass/48/google-web-search.png" alt="google-web-search"/>
+          <p className="app-title">DexScann</p>
         </div>
       </div>
     </div>

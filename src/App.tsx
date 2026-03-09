@@ -81,6 +81,7 @@ import CreateHederaAccount from "./Components/CreateAccount.tsx";
 import ConnectHederaAccount from "./Components/ConnectWallet.tsx";
 import TodoApp from "./Components/TodoApp.tsx";
 import Chatbox from "./Components/Chatbox.tsx";
+import DexScan from "./Components/DexScan.tsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -97,6 +98,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<DappStructure />} />
         <Route path="/CreateAccount" element={<CreateHederaAccount />} />
+        <Route path="/DexScan" element={<DexScan/>}/>
        <Route
   path="/ConnectWallet"
   element={
