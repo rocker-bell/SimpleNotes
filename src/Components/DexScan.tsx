@@ -814,51 +814,304 @@ const DexScan = ({ accountId, evmAddress }: DexScanProps) => {
   -----------------------
   */
 
-  const searchQuery = async () => {
+  // const searchQuery = async () => {
 
-    if (!search) return;
+  //   if (!search) return;
 
-    try {
+  //   try {
 
-      const accountRegex = /^0\.0\.\d+$/;
-      const txRegex = /^0\.0\.\d+-\d+-\d+$/;
-      const evmRegex = /^0x[a-fA-F0-9]{40}$/;
+  //     const accountRegex = /^0\.0\.\d+$/;
+  //     const txRegex = /^0\.0\.\d+-\d+-\d+$/;
+  //     const evmRegex = /^0x[a-fA-F0-9]{40}$/;
 
-      let url = "";
+  //     let url = "";
 
-      if (txRegex.test(search)) {
-        url = `${baseURL}/transactions/${search}`;
-      }
-      else if (evmRegex.test(search)) {
-        url = `${baseURL}/accounts/${search}`;
-      }
-      else if (accountRegex.test(search)) {
-        url = `${baseURL}/accounts/${search}/transactions?limit=10&order=desc`;
-      }
-      else {
-        console.warn("Invalid search format");
-        return;
-      }
+  //     if (txRegex.test(search)) {
+  //       url = `${baseURL}/transactions/${search}`;
+  //     }
+  //     else if (evmRegex.test(search)) {
+  //       url = `${baseURL}/accounts/${search}`;
+  //     }
+  //     else if (accountRegex.test(search)) {
+  //       url = `${baseURL}/accounts/${search}/transactions?limit=10&order=desc`;
+  //     }
+  //     else {
+  //       console.warn("Invalid search format");
+  //       return;
+  //     }
 
-      const res = await fetch(url);
+  //     const res = await fetch(url);
 
-      if (!res.ok) {
-        console.error("Mirror node error:", res.status);
-        return;
-      }
+  //     if (!res.ok) {
+  //       console.error("Mirror node error:", res.status);
+  //       return;
+  //     }
 
-      const data = await res.json();
+  //     const data = await res.json();
 
-      if (data.transactions) {
-        setResults(data.transactions);
-      } else {
-        setResults([data]);
-      }
+  //     if (data.transactions) {
+  //       setResults(data.transactions);
+  //     } else {
+  //       setResults([data]);
+  //     }
 
-    } catch (err) {
-      console.error("Search error:", err);
+  //   } catch (err) {
+  //     console.error("Search error:", err);
+  //   }
+  // };
+//   const searchQuery = async () => {
+
+//   if (!search) return;
+
+//   const query = search.trim();
+
+//   try {
+
+//     const accountRegex = /^0\.0\.\d+$/;
+//     const txRegex = /^0\.0\.\d+@\d+\.\d+$/;
+//     const evmRegex = /^0x[a-fA-F0-9]{40}$/;
+
+//     let url = "";
+
+//     if (txRegex.test(query)) {
+
+//       url = `${baseURL}/transactions/${encodeURIComponent(query)}`;
+
+//     }
+//     else if (evmRegex.test(query)) {
+
+//       url = `${baseURL}/accounts/${query}`;
+
+//     }
+//     else if (accountRegex.test(query)) {
+
+//       url = `${baseURL}/transactions?account.id=${query}&limit=10&order=desc`;
+
+//     }
+//     else {
+
+//       console.warn("Invalid search format:", query);
+//       return;
+
+//     }
+
+//     const res = await fetch(url);
+
+//     if (!res.ok) {
+//       console.error("Mirror node error:", res.status);
+//       return;
+//     }
+
+//     const data = await res.json();
+
+//     if (data.transactions) {
+
+//       setResults(data.transactions);
+
+//     } else if (data.account) {
+
+//       setResults([data]);
+
+//     } else {
+
+//       setResults([data]);
+
+//     }
+
+//   } catch (err) {
+
+//     console.error("Search error:", err);
+
+//   }
+
+// };
+
+// const searchQuery = async () => {
+//   if (!search) return;
+
+//   const query = search.trim();
+
+//   try {
+//     const accountRegex = /^0\.0\.\d+$/;            // Hedera account
+//     const txIdRegex = /^0\.0\.\d+@\d+\.\d+$/;      // Hedera transaction ID
+//     const evmRegex = /^0x[a-fA-F0-9]{40}$/;        // EVM address
+//     const txHashRegex = /^[a-fA-F0-9]{64}$/;       // Hedera tx hash (32 bytes hex)
+
+//     let url = "";
+
+//     if (txIdRegex.test(query)) {
+//       url = `${baseURL}/transactions?transactionId=${encodeURIComponent(query)}`;
+//     } else if (txHashRegex.test(query)) {
+//       url = `${baseURL}/transactions?transaction.hash=${query}`;
+//     } else if (evmRegex.test(query)) {
+//       url = `${baseURL}/accounts/${query}`;
+//     } else if (accountRegex.test(query)) {
+//       url = `${baseURL}/transactions?account.id=${query}&limit=10&order=desc`;
+//     } else {
+//       console.warn("Invalid search format:", query);
+//       return;
+//     }
+
+//     const res = await fetch(url);
+
+//     if (!res.ok) {
+//       console.error("Mirror node error:", res.status);
+//       return;
+//     }
+
+//     const data = await res.json();
+
+//     if (data.transactions) {
+//       setResults(data.transactions);
+//     } else if (data.account) {
+//       setResults([data]);
+//     } else {
+//       setResults([data]);
+//     }
+
+//   } catch (err) {
+//     console.error("Search error:", err);
+//   }
+// };
+// works
+// const searchQuery = async () => {
+//   if (!search) return;
+
+//   const query = search.trim();
+//   const accountRegex = /^0\.0\.\d+$/;
+//   const txIdRegex = /^0\.0\.\d+@\d+\.\d+$/;
+//   const evmRegex = /^0x[a-fA-F0-9]{40}$/;
+
+//   let url = "";
+
+//   if (txIdRegex.test(query)) {
+//     // ✅ Correct: path parameter
+//     url = `${baseURL}/transactions/${encodeURIComponent(query)}`;
+//   } else if (evmRegex.test(query)) {
+//     url = `${baseURL}/accounts/${query}`;
+//   } else if (accountRegex.test(query)) {
+//     url = `${baseURL}/transactions?account.id=${query}&limit=10&order=desc`;
+//   } else {
+//     console.warn("Invalid search format:", query);
+//     return;
+//   }
+
+//   try {
+//     const res = await fetch(url);
+//     if (!res.ok) {
+//       const text = await res.text();
+//       console.error("Mirror node error:", res.status, text);
+//       return;
+//     }
+//     const data = await res.json();
+//     if (data.transactions) {
+//       setResults(data.transactions);
+//     } else if (data.account) {
+//       setResults([data]);
+//     } else {
+//       setResults([data]);
+//     }
+//   } catch (err) {
+//     console.error("Search error:", err);
+//   }
+// };
+
+const searchQuery = async () => {
+  if (!search) return;
+
+  const query = search.trim();
+  const accountRegex = /^0\.0\.\d+$/;               // Hedera account
+  const txIdRegex = /^0\.0\.\d+[-@]\d+-\d+$/;       // Hedera tx ID
+  const evmRegex = /^0x[a-fA-F0-9]{40}$/;           // EVM address
+
+  let url = "";
+
+  if (txIdRegex.test(query)) {
+    const txIdMirror = query.replace("@", "-");     // convert @ → - for Mirror Node
+    url = `${baseURL}/transactions/${encodeURIComponent(txIdMirror)}`;
+  } else if (evmRegex.test(query)) {
+    url = `${baseURL}/accounts/${query}`;
+  } else if (accountRegex.test(query)) {
+    url = `${baseURL}/transactions?account.id=${query}&limit=10&order=desc`;
+  } else {
+    console.warn("Invalid search format:", query);
+    return;
+  }
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("Mirror node error:", res.status, text);
+      return;
     }
-  };
+    const data = await res.json();
+    if (data.transactions) {
+      setResults(data.transactions);
+    } else if (data.account) {
+      setResults([data]);
+    } else {
+      setResults([data]);
+    }
+  } catch (err) {
+    console.error("Search error:", err);
+  }
+};
+
+//   const searchQuery = async () => {
+
+//   if (!search) return;
+
+//   try {
+
+//     const accountRegex = /^0\.0\.\d+$/;
+//     const txRegex = /^0\.0\.\d+@\d+\.\d+$/;
+//     const evmRegex = /^0x[a-fA-F0-9]{40}$/;
+
+//     let url = "";
+
+//     if (txRegex.test(search)) {
+
+//       url = `${baseURL}/transactions?transactionId=${search}`;
+
+//     }
+//     else if (evmRegex.test(search)) {
+
+//       url = `${baseURL}/accounts?account.evm_address=${search}`;
+
+//     }
+//     else if (accountRegex.test(search)) {
+
+//       url = `${baseURL}/accounts/${search}/transactions?limit=10&order=desc`;
+
+//     }
+//     else {
+
+//       console.warn("Invalid search format");
+//       return;
+
+//     }
+
+//     const res = await fetch(url);
+
+//     const data = await res.json();
+
+//     if (data.transactions) {
+//       setResults(data.transactions);
+//     }
+//     else if (data.accounts) {
+//       setResults(data.accounts);
+//     }
+//     else {
+//       setResults([data]);
+//     }
+
+//   } catch (err) {
+
+//     console.error("Search error:", err);
+
+//   }
+// };
 
 //             const searchQuery = async () => {
 
@@ -943,7 +1196,8 @@ const DexScan = ({ accountId, evmAddress }: DexScanProps) => {
 
     try {
 
-      const url = `${baseURL}/accounts/${accountId}/transactions?limit=20&order=desc`;
+      // const url = `${baseURL}/accounts/${accountId}/transactions?limit=20&order=desc`;
+      const url = `${baseURL}/transactions?account.id=${accountId}&limit=20&order=desc`;
 
       const res = await fetch(url);
 
@@ -953,8 +1207,9 @@ const DexScan = ({ accountId, evmAddress }: DexScanProps) => {
       }
 
       const data = await res.json();
-
+      console.log("data:", data);
       setHistory(data.transactions || []);
+      console.log("Fetching history for:", accountId);
 
     } catch (err) {
 
