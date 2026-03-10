@@ -97,13 +97,14 @@
 
 .apps-container {
   width: 90%;
+  max-width: 90%;
   min-height: 100px;
   padding: 30px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   border: 1px solid black;
-  gap: 30px;
+  gap: 40px;
 }
 
 .app-box {

@@ -84,6 +84,7 @@ import Chatbox from "./Components/Chatbox.tsx";
 import DexScan from "./Components/DexScan.tsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import HbarAccountManager from "./Components/HbarAccountManager.tsx";
 
 const App = () => {
   // shared wallet state
@@ -130,6 +131,7 @@ const App = () => {
           path="/chatbox"
           element={<Chatbox accountId={accountId} privateKey={privateKey} evmAddress={evmAddress} />}
         />
+        <Route path="/HCmanager" element={<HbarAccountManager />} />
       </Routes>
     </>
   );

@@ -2989,6 +2989,9 @@ const [hasConnected, setHasConnected] = useState(false);
     navigate("/DexScan")
   }
 
+  const handleHCManagerLink = () => {
+    navigate("/HCmanager")
+  }
   // -------------------- Render --------------------
   return (
     <div className="container">
@@ -3066,6 +3069,10 @@ const [hasConnected, setHasConnected] = useState(false);
          <div className="app-box" onClick={handleDexScannLink}>
             <img width="48" height="48" src="https://img.icons8.com/liquid-glass/48/google-web-search.png" alt="google-web-search"/>
           <p className="app-title">DexScann</p>
+        </div>
+        <div className="app-box" onClick={handleHCManagerLink}>
+            <img width="50" height="50" src="https://img.icons8.com/ios-filled/50/test-account.png" alt="test-account"/>
+          <p className="app-title">HCManager</p>
         </div>
       </div>
     </div>
