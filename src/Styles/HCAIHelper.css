@@ -1,0 +1,263 @@
+/* Floating Position
+.AI_chatbox_wrapper {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    z-index: 9999;
+    background-color: green;
+}
+
+
+.AI_chatbox_closed {
+    width: 70px;
+    height: 70px;
+    background: blue;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+
+.AI_chatbox_wrapper.open {
+    width: 400px;
+    height: 550px;
+}
+
+
+.AI_chatbox_container {
+    width: 400px;
+    height: 550px;
+    background: white;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+
+.AI_chatbox_header {
+    padding: 12px;
+    background: blue;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.AI_close_btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.AI_chatbox_messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.chat_message {
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 80%;
+}
+
+.chat_message.user {
+    background: #007bff;
+    color: white;
+    margin-left: auto;
+}
+
+.chat_message.ai {
+    background: #f1f1f1;
+}
+
+
+.AI_chatbox_input {
+    display: flex;
+    border-top: 1px solid #ddd;
+}
+
+.AI_chatbox_input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+}
+
+.AI_chatbox_input button {
+    padding: 10px 15px;
+    border: none;
+    background: blue;
+    color: white;
+    cursor: pointer;
+} */
+
+
+/* Wrapper for chatbox */
+.AI_chatbox_wrapper {
+  /* position: fixed; */
+  /* bottom: 20px;
+  right: 20px; */
+  min-width: 100%;
+  min-height: 100%;
+  font-family: 'Inter', sans-serif;
+  /* z-index: 999; */
+  transition: all 0.3s ease-in-out;
+}
+
+/* Closed state bubble */
+.AI_chatbox_closed {
+  width: 50px;
+  height: 50px;
+  background-color: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+
+.AI_chatbox_closed:hover {
+  transform: scale(1.1);
+}
+
+/* Open state container */
+.AI_chatbox_container {
+  width: var(--chatbox-width);
+  max-width: 90vw;
+  height: var(--chatbox-height);
+  min-height: 700px;
+  max-height: 700px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease-in-out;
+  
+}
+
+/* Header */
+.AI_chatbox_header {
+  background-color: #357ab8;
+  color: #fff;
+  padding: 12px 16px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.AI_close_btn {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.AI_close_btn:hover {
+  transform: scale(1.2);
+}
+
+/* Messages container */
+.AI_chatbox_messages {
+  flex: 1;
+  padding: 12px 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: #f9fafc;
+}
+
+/* Individual messages */
+.chat_message {
+  padding: 8px 12px;
+  border-radius: 12px;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.chat_message.user {
+  align-self: flex-end;
+  background-color: var(--user-bg);
+  color: var(--user-color);
+}
+
+.chat_message.ai {
+  align-self: flex-start;
+  background-color: var(--ai-bg);
+  color: var(--ai-color);
+}
+
+/* Input area */
+.AI_chatbox_input {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid #ddd;
+}
+
+.AI_chatbox_input input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+}
+
+.AI_chatbox_input input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(74,144,226,0.2);
+}
+
+.AI_chatbox_input button {
+  padding: 8px 14px;
+  border: none;
+   background-color: #357ab8;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+/* .AI_chatbox_input button:hover {
+  background-color: #357ab8;
+} */
+
+
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scrollbar styling */
+.AI_chatbox_messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.AI_chatbox_messages::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 3px;
+}

@@ -18,7 +18,7 @@ html, body {
 /* Root container */
 #root {
     width: 450px;
-    height: 600px;
+    height: 700px;
     /* border: 3px solid red; */
     /* background: linear-gradient(to bottom, #6c63ff, #7b4bd9); */
     background: linear-gradient(to bottom, #f5f5ff, #e8e0f8);

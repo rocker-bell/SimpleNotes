@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 DRAFT.TXT
+.env.local
 
 
 # Editor directories and files

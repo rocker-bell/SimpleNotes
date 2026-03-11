@@ -83,6 +83,7 @@ import TodoApp from "./Components/TodoApp.tsx";
 import Chatbox from "./Components/Chatbox.tsx";
 import DexScan from "./Components/DexScan.tsx";
 import HCAIhelper from "./Components/HCAIhelper.tsx";
+// import HCAIhelper from "./Components/AI_Chatbox.tsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import HbarAccountManager from "./Components/HbarAccountManager.tsx";
@@ -133,7 +134,20 @@ const App = () => {
           element={<Chatbox accountId={accountId} privateKey={privateKey} evmAddress={evmAddress} />}
         />
         <Route path="/HCmanager" element={<HbarAccountManager />} />
-        <Route path="/HCAIhelper" element={<HCAIhelper />} />
+        <Route path="/HCAIhelper" element={<HCAIhelper 
+              accountId={accountId}
+              privateKey={privateKey}
+              evmAddress={evmAddress} />} />
+        {/* <Route
+          path="/HCAIhelper"
+          element={
+            <HCAIhelper
+              accountId={accountId}
+              privateKey={privateKey}
+              evmAddress={evmAddress}
+            />
+          }
+        /> */}
       </Routes>
     </>
   );
