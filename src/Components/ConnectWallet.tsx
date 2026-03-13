@@ -2817,13 +2817,26 @@ import todoapp_icon from "../assets/todoapp_icon.png";
 
 // type Status = "Active" | "Completed" | "Expired";
 
+// interface ConnectWalletProps {
+//   accountId: string | null;
+//   privateKey: string | null;
+//    evmAddress: string | null;
+//   setAccountId: React.Dispatch<React.SetStateAction<string | null>>;
+//   setPrivateKey: React.Dispatch<React.SetStateAction<string | null>>;
+//   setEvmAddress: React.Dispatch<React.SetStateAction<string | null>>; // ✅ add this
+
+  
+// }
+
 interface ConnectWalletProps {
   accountId: string | null;
   privateKey: string | null;
-   evmAddress: string | null;
+  evmAddress: string | null;
   setAccountId: React.Dispatch<React.SetStateAction<string | null>>;
   setPrivateKey: React.Dispatch<React.SetStateAction<string | null>>;
-  setEvmAddress: React.Dispatch<React.SetStateAction<string | null>>; // ✅ add this
+  setEvmAddress: React.Dispatch<React.SetStateAction<string | null>>;
+  accounts: { accountId: string; privateKey: string; evmAddress: string }[]; // type accounts
+  activeAccount: number | null; // index of active wallet
 }
 
 const ConnectHederaAccount: React.FC<ConnectWalletProps> = ({
@@ -2833,6 +2846,8 @@ const ConnectHederaAccount: React.FC<ConnectWalletProps> = ({
   setAccountId,
   setPrivateKey,
   setEvmAddress,
+    accounts,
+  activeAccount,
 }) => {
   const [balance, setBalance] = useState("");
   const [loading, setLoading] = useState(false);
@@ -2964,6 +2979,15 @@ const [hasConnected, setHasConnected] = useState(false);
     const intervalId = setInterval(fetchBalance, 5000);
     return () => clearInterval(intervalId);
   }, [accountId]);
+
+  useEffect(() => {
+  if (activeAccount !== null && accounts[activeAccount]) {
+    const acc = accounts[activeAccount];
+    setAccountId(acc.accountId);
+    setPrivateKey(acc.privateKey);
+    setEvmAddress(acc.evmAddress);
+  }
+}, [activeAccount, accounts]);
 
   // -------------------- Masking helpers --------------------
   const maskAccountId = (id: string) =>
