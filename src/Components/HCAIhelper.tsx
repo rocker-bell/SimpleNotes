@@ -367,10 +367,11 @@ const HCAIhelper = ({ evmAddress, privateKey, accountId }: HCAIHelperProps) => {
   const [chat, setChat] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [activesend, setactivesend] = useState(false);
-
+  const API =  import.meta.env.VITE_GEMINI_API_KEY as string;
+  const API_url = atob(API);
   // Initialize Gemini AI
   const genAI = new GoogleGenerativeAI(
-    import.meta.env.VITE_GEMINI_API_KEY as string
+     API_url
   );
 
   const model = genAI.getGenerativeModel({
