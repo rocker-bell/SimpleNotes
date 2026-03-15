@@ -2837,6 +2837,8 @@ interface ConnectWalletProps {
   setEvmAddress: React.Dispatch<React.SetStateAction<string | null>>;
   accounts: { accountId: string; privateKey: string; evmAddress: string }[]; // type accounts
   activeAccount: number | null; // index of active wallet
+  autoConnect: boolean; // ✅ new
+  setAutoConnect: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ConnectHederaAccount: React.FC<ConnectWalletProps> = ({
@@ -2848,6 +2850,8 @@ const ConnectHederaAccount: React.FC<ConnectWalletProps> = ({
   setEvmAddress,
     accounts,
   activeAccount,
+  autoConnect,
+  setAutoConnect
 }) => {
   const [balance, setBalance] = useState("");
   const [loading, setLoading] = useState(false);
@@ -3035,6 +3039,13 @@ const copyToClipboard = async (text: string, field: CopyField) => {
     setCopied("");
   }, 2000);
 };
+
+useEffect(() => {
+  if (autoConnect && accountId && privateKey && !hasConnected) {
+    connectAccount();
+    setAutoConnect(false); // reset flag
+  }
+}, [autoConnect, accountId, privateKey]);
 
   // -------------------- Render --------------------
   return (

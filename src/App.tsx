@@ -74,6 +74,7 @@
 // export default App;
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   loadAccounts,
   saveAccounts,
@@ -95,11 +96,12 @@ import "react-toastify/dist/ReactToastify.css";
 import HbarAccountManager from "./Components/HbarAccountManager.tsx";
 import Myapps from "./Components/Myapps.tsx"
 const App = () => {
+  const navigate = useNavigate()
   // shared wallet state
   const [accountId, setAccountId] = useState<string | null>(null);
   const [privateKey, setPrivateKey] = useState<string | null>(null);
   const [evmAddress, setEvmAddress] = useState<string | null>(null);
-
+  const [autoConnect, setAutoConnect] = useState(false);
   const [accounts, setAccounts] = useState<any[]>([])
 const [activeAccount, setActiveAccount] = useState<number | null>(null)
 
@@ -174,6 +176,7 @@ const connectAccount = async (acc?: { accountId: string; privateKey: string }) =
   clearAccount();                   // disconnect old wallet
   setActiveAccount(index);          // set new active wallet
   connectAccount(accounts[index]);  // connect new wallet
+  navigate('/ConnectWallet')
 };
 
   return (
@@ -217,7 +220,9 @@ const connectAccount = async (acc?: { accountId: string; privateKey: string }) =
       setPrivateKey={setPrivateKey}
       setEvmAddress={setEvmAddress}
       accounts={accounts}           // pass accounts
-      activeAccount={activeAccount} // pass activeAccount
+      activeAccount={activeAccount} // pass 
+      autoConnect={autoConnect}
+      setAutoConnect={setAutoConnect}
     />
   }
 />

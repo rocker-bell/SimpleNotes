@@ -12,6 +12,8 @@ interface ConnectWalletProps {
         evmAddress: string;
     }[];
     activeAccount: number | null;
+    autoConnect: boolean;
+    setAutoConnect: React.Dispatch<React.SetStateAction<boolean>>;
 }
 declare const ConnectHederaAccount: React.FC<ConnectWalletProps>;
 export default ConnectHederaAccount;

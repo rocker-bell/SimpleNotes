@@ -1,8 +1,8 @@
-import "../Styles/TodoApp.css";
-interface TodoAppProps {
+import "../Styles/DexScan.css";
+interface DexScanProps {
     accountId: string | null;
     privateKey: string | null;
     evmAddress: string | null;
 }
-declare const TodoApp: ({ accountId, privateKey, evmAddress }: TodoAppProps) => import("react/jsx-runtime").JSX.Element;
-export default TodoApp;
+declare const DexScan: ({ accountId, evmAddress }: DexScanProps) => import("react/jsx-runtime").JSX.Element;
+export default DexScan;

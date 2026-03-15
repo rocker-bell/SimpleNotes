@@ -1219,6 +1219,11 @@ const searchQuery = async () => {
 
   };
 
+  
+  const getHashscanUrl = (txId: string) => {
+  return `https://hashscan.io/${network}/transaction/${txId}`;
+};
+
   useEffect(() => {
     fetchHistory();
   }, [accountId, evmAddress, network]);
@@ -1317,6 +1322,16 @@ const searchQuery = async () => {
 
               </div>
 
+              <div className="more-class">
+              <a
+  className="more"
+  href={getHashscanUrl(item.transaction_id)}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  more
+</a>  </div>
+
             </div>
 
           ))
@@ -1335,7 +1350,21 @@ const searchQuery = async () => {
               <p><b>Status:</b> {tx.result}</p>
               <p><b>Time:</b> {tx.consensus_timestamp}</p>
 
+               <div className="more-class">
+              <a
+  className="more"
+  href={getHashscanUrl(tx.transaction_id)}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  more
+</a>
             </div>
+
+            </div>
+
+           
+            
 
           ))
         }

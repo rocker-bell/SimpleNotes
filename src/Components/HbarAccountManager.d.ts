@@ -1,3 +1,4 @@
+import "../Styles/HbarAccountManager.css";
 type HederaAccount = {
     accountId: string;
     privateKey: string;

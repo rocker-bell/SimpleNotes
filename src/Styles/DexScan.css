@@ -40,6 +40,7 @@
 .token-card{
   display:flex;
   justify-content:space-between;
+  flex-direction: column;
   padding:10px;
   border-bottom:1px solid #eee;
 }
@@ -47,4 +48,15 @@
 .history-item{
   padding:8px;
   cursor:pointer;
+}
+
+.more-class {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.more {
+  font-size: larger;
 }

@@ -1,547 +1,245 @@
-// import { useState, useEffect } from "react";
-// import { Link } from "react-router-dom";
-// import {
-//   Client,
-//   AccountId,
-//   PrivateKey,
-//   ContractCallQuery,
-//   ContractFunctionParameters,
-//   ContractExecuteTransaction,
-// } from "@hashgraph/sdk";
-// import { toast } from "react-toastify";
-// import "../Styles/TodoApp.css";
-
-// type Status = "Active" | "Completed" | "Expired";
-
-// const CONTRACT_ID = "0.0.8078086";
-
-// interface TodoAppProps {
-//   accountId: string | null;
-//   privateKey: string | null;
-//   evmAddress: string | null;
-// }
-
-// interface TodoItem {
-//   id: number;
-//   title: string;
-//   description: string;
-//   status: Status;
-//   owner: string;
-// }
-
-// const TodoApp = ({ accountId, privateKey, evmAddress }: TodoAppProps) => {
-//   const [todos, setTodos] = useState<TodoItem[]>([]);
-//   const [todoTitle, setTodoTitle] = useState("");
-//   const [activeFilter, setActiveFilter] = useState<Status | "All">("All");
-
-//   // -------------------- Hedera Client --------------------
-//   const createClient = () => {
-//     if (!accountId || !privateKey) throw new Error("Wallet not connected");
-//     const client =
-//       import.meta.env.VITE_NETWORK === "mainnet"
-//         ? Client.forMainnet()
-//         : Client.forTestnet();
-//     client.setOperator(
-//       AccountId.fromString(accountId),
-//       PrivateKey.fromStringECDSA(privateKey)
-//     );
-//     return client;
-//   };
-
- 
-//   const fetchTodos = async () => {
-//   if (!accountId || !privateKey || !evmAddress) return;
-
-//   try {
-//     const client = createClient();
-
-//     // 1. Get total todos
-//     const totalTx = await new ContractCallQuery()
-//       .setContractId(CONTRACT_ID)
-//       .setGas(100_000)
-//       .setFunction("getTotalTodos")
-//       .execute(client);
-
-//     const totalTodos = Number(totalTx.getUint256(0));
-//     const allTodos: TodoItem[] = [];
-
-//     // 2. Loop through and fetch details
-//     for (let i = 1; i <= totalTodos; i++) {
-//       const todoRes = await new ContractCallQuery()
-//         .setContractId(CONTRACT_ID)
-//         .setGas(400_000) 
-//         .setFunction("getTodo", new ContractFunctionParameters().addUint256(i))
-//         .execute(client);
-
-//       const title = todoRes.getString(0);
-//       const description = todoRes.getString(1);
-//       const statusIndex = Number(todoRes.getUint8(4)); 
-      
-//       // The "0x00...7a647f" address from your screenshot
-//       const rawOwnerAddress = todoRes.getAddress(5); 
-
-//       // ✅ Normalize to "0.0.8021119" format
-//       const ownerAccountId = AccountId.fromSolidityAddress(rawOwnerAddress).toString();
-//       console.log("ownerAccountID", ownerAccountId)
-//       const statusMap: Record<number, Status> = {
-//         0: "Active",
-//         1: "Completed",
-//         2: "Expired"
-//       };
-
-//       allTodos.push({ 
-//         id: i, 
-//         title, 
-//         description, 
-//         status: statusMap[statusIndex] || "Expired", 
-//         owner: ownerAccountId, 
-//       });
-//     }
-
-//     // 3. Compare with YOUR normalized Account ID
-//     // accountId is the "0.0.xxxx" string passed as a prop
-//     const myNormalizedId = AccountId.fromString(accountId).toString();
-//     console.log("normalized evm", myNormalizedId)
-//     const userTodos = allTodos.filter(todo => todo.owner === myNormalizedId);
-
-//     setTodos(userTodos);
-//   } catch (err) {
-//     console.error("Fetch Error:", err);
-//     toast.error("Failed to sync with blockchain");
-//   }
-// };
-
-
-
-
-//   // -------------------- Add Todo --------------------
-//   const addTodo = async () => {
-//     if (!todoTitle || !accountId || !privateKey) {
-//       toast.error("Please enter a task");
-//       return;
-//     }
-
-//     try {
-//       const client = createClient();
-//       const dueDate = Math.floor(Date.now() / 1000) + 24 * 60 * 60;
-
-//       const tx = await new ContractExecuteTransaction()
-//         .setContractId(CONTRACT_ID)
-//         .setGas(500_000)
-//         .setFunction(
-//           "addTodo",
-//           new ContractFunctionParameters()
-//             .addString(todoTitle)
-//             .addString("")
-//             .addUint256(dueDate)
-//         )
-//         .execute(client);
-
-//       await tx.getReceipt(client);
-//       toast.success("Todo added!");
-//       setTodoTitle("");
-//       fetchTodos();
-//     } catch (err) {
-//       console.error(err);
-//       toast.error("Failed to add todo");
-//     }
-//   };
-
- 
-// const updateTodoStatus = async (todoId: number, newStatus: Status) => {
-//   if (!accountId || !privateKey || !evmAddress) {
-//     toast.error("Wallet not connected");
-//     return;
-//   }
-
-//   try {
-//     const client = createClient();
-    
-//     // Map string status back to Solidity Enum integers
-//     // Active = 0, Completed = 1, Expired = 2
-//     const statusValue = newStatus === "Active" ? 0 : 1;
-
-//     toast.info(`Updating status to ${newStatus}...`, { autoClose: 2000 });
-
-//     const tx = await new ContractExecuteTransaction()
-//       .setContractId(CONTRACT_ID)
-//       .setGas(500_000)
-//       .setFunction(
-//         "updateStatus", 
-//         new ContractFunctionParameters()
-//           .addUint256(todoId)
-//           .addUint8(statusValue) // Passing the enum as uint8
-//       )
-//       .execute(client);
-
-//     const receipt = await tx.getReceipt(client);
-    
-//     if (receipt.status.toString() === "SUCCESS") {
-//       toast.success(
-//         newStatus === "Active" 
-//           ? "Task reactivated (+1 week extension)!" 
-//           : "Task completed!"
-//       );
-//       fetchTodos(); // Refresh the list
-//     } else {
-//       throw new Error("Transaction failed");
-//     }
-
-//   } catch (err: any) {
-//     console.error("Update Error:", err);
-//     // Handle the specific revert message from your contract
-//     if (err.message.includes("Expired")) {
-//       toast.error("Cannot modify an expired task.");
-//     } else {
-//       toast.error("Failed to update status");
-//     }
-//   }
-// };
-//   // -------------------- Polling --------------------
-//   useEffect(() => {
-//     if (!accountId || !privateKey || !evmAddress) return;
-//     fetchTodos();
-//     const intervalId = setInterval(fetchTodos, 5000);
-//     return () => clearInterval(intervalId);
-//   }, [accountId, privateKey, evmAddress]);
-
-//   // -------------------- Filtered Todos --------------------
-//   const filteredTodos = todos.filter(t =>
-//     activeFilter === "All" ? true : t.status === activeFilter
-//   );
-
-//   return (
-//     <div className="todo-container">
-//       <Link to="/">home</Link>
-//       <h2 className="header-title">Todo List</h2>
-
-//       {/* Input Section */}
-//       <div className="input-group">
-//         <input
-//           type="text"
-//           placeholder="Add a new task..."
-//           value={todoTitle}
-//           onChange={e => setTodoTitle(e.target.value)}
-//           className="main-input"
-//         />
-//         <button onClick={addTodo} className="add-btn">
-//           +
-//         </button>
-//       </div>
-
-//       {/* Tabs Section */}
-//       <div className="tabs-container">
-//         {["All", "Active", "Completed"].map(tab => (
-//           <button
-//             key={tab}
-//             className={`tab-item ${activeFilter === tab ? "active-tab" : ""}`}
-//             onClick={() => setActiveFilter(tab as any)}
-//           >
-//             {tab}
-//           </button>
-//         ))}
-//       </div>
-
-//       {/* Todo List / Empty State */}
-//       <div className="content-area">
-//         {filteredTodos.length > 0 ? (
-//           <div className="todo-list">
-//             {filteredTodos.map(todo => (
-//               <div key={todo.id} className="todo-card">
-//                 <div className="todo-info">
-//                   <p className="todo-text">{todo.title}</p>
-//                   <span className={`status-badge ${todo.status.toLowerCase()}`}>
-//                     {todo.status}
-//                   </span>
-//                 </div>
-//                 <input
-//                   type="checkbox"
-//                   className="checkbox"
-//                   checked={todo.status === "Completed"}
-//                   disabled={todo.status === "Expired" || !evmAddress}
-//                   onChange={() =>
-//                     updateTodoStatus(
-//                       todo.id,
-//                       todo.status === "Completed" ? "Active" : "Completed"
-//                     )
-//                   }
-//                 />
-//               </div>
-//             ))}
-//           </div>
-//         ) : (
-//           <div className="empty-state">
-//             <div className="check-icon-circle">
-//               <span className="checkmark">✓</span>
-//             </div>
-//             <p>Your todo list is empty. Add a task to get started!</p>
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default TodoApp;
-
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  Client,
-  AccountId,
-  PrivateKey,
-  ContractCallQuery,
-  ContractFunctionParameters,
-  ContractExecuteTransaction,
-} from "@hashgraph/sdk";
-import { toast } from "react-toastify";
-import "../Styles/TodoApp.css";
+import "../Styles/DexScan.css";
 
-type Status = "Active" | "Completed" | "Expired";
-
-const CONTRACT_ID = "0.0.8078086";
-const ONE_WEEK_SECONDS = 7 * 24 * 60 * 60; // 604800 seconds
-
-interface TodoAppProps {
+interface DexScanProps {
   accountId: string | null;
   privateKey: string | null;
   evmAddress: string | null;
 }
 
-interface TodoItem {
-  id: number;
-  title: string;
-  description: string;
-  status: Status;
-  owner: string;
-  dueDate: number;
-}
+const DexScan = ({ accountId, evmAddress }: DexScanProps) => {
 
-const TodoApp = ({ accountId, privateKey, evmAddress }: TodoAppProps) => {
-  const [todos, setTodos] = useState<TodoItem[]>([]);
-  const [todoTitle, setTodoTitle] = useState("");
-  const [activeFilter, setActiveFilter] = useState<Status | "All">("All");
+  const [network, setNetwork] = useState<"mainnet" | "testnet">("testnet");
+  const [search, setSearch] = useState("");
+  const [results, setResults] = useState<any[]>([]);
+  const [history, setHistory] = useState<any[]>([]);
+  const [tab, setTab] = useState<"results" | "history">("results");
 
-  const createClient = () => {
-    if (!accountId || !privateKey) throw new Error("Wallet not connected");
-    const client = import.meta.env.VITE_NETWORK === "mainnet" ? Client.forMainnet() : Client.forTestnet();
-    client.setOperator(AccountId.fromString(accountId), PrivateKey.fromStringECDSA(privateKey));
-    return client;
-  };
+  const baseURL =
+    network === "mainnet"
+      ? "https://mainnet.mirrornode.hedera.com/api/v1"
+      : "https://testnet.mirrornode.hedera.com/api/v1";
 
 
 
-  const fetchTodos = async () => {
-  if (!accountId || !privateKey || !evmAddress) return;
+const searchQuery = async () => {
+  if (!search) return;
 
-  try {
-    const client = createClient();
+  const query = search.trim();
+  const accountRegex = /^0\.0\.\d+$/;               // Hedera account
+  const txIdRegex = /^0\.0\.\d+[-@]\d+-\d+$/;       // Hedera tx ID
+  const evmRegex = /^0x[a-fA-F0-9]{40}$/;           // EVM address
 
-    const totalTx = await new ContractCallQuery()
-      .setContractId(CONTRACT_ID)
-      .setGas(100_000)
-      .setFunction("getTotalTodos")
-      .execute(client);
+  let url = "";
 
-    const totalTodos = Number(totalTx.getUint256(0));
-    const allTodos: TodoItem[] = [];
-
-    for (let i = 1; i <= totalTodos; i++) {
-
-      const todoRes = await new ContractCallQuery()
-        .setContractId(CONTRACT_ID)
-        .setGas(400_000)
-        .setFunction("getTodo", new ContractFunctionParameters().addUint256(i))
-        .execute(client);
-
-      // ✅ correct decoding order
-      const title = todoRes.getString(0);
-      const description = todoRes.getString(1);
-      // const createdAt = Number(todoRes.getUint256(2));
-      const dueDate = Number(todoRes.getUint256(3));
-      const statusIndex = Number(todoRes.getUint8(4));
-      const rawOwnerAddress = todoRes.getAddress(5);
-
-      const ownerAccountId =
-        AccountId.fromSolidityAddress(rawOwnerAddress).toString();
-
-      const statusMap: Record<number, Status> = {
-        0: "Active",
-        1: "Completed",
-        2: "Expired"
-      };
-
-      allTodos.push({
-        id: i,
-        title,
-        description,
-        status: statusMap[statusIndex] || "Expired",
-        owner: ownerAccountId,
-        dueDate
-      });
-    }
-
-    const myNormalizedId = AccountId.fromString(accountId).toString();
-
-    const userTodos = allTodos.filter(
-      (todo) => todo.owner === myNormalizedId
-    );
-
-    setTodos(userTodos);
-
-  } catch (err) {
-    console.error("Fetch Error:", err);
-  }
-};
-
-  const addTodo = async () => {
-  if (!todoTitle || !accountId || !privateKey) {
-    toast.error("Please enter a task");
+  if (txIdRegex.test(query)) {
+    const txIdMirror = query.replace("@", "-");     // convert @ → - for Mirror Node
+    url = `${baseURL}/transactions/${encodeURIComponent(txIdMirror)}`;
+  } else if (evmRegex.test(query)) {
+    url = `${baseURL}/accounts/${query}`;
+  } else if (accountRegex.test(query)) {
+    url = `${baseURL}/transactions?account.id=${query}&limit=10&order=desc`;
+  } else {
+    console.warn("Invalid search format:", query);
     return;
   }
 
   try {
-    const client = createClient();
-
-    const dueDate = Math.floor(Date.now() / 1000) + ONE_WEEK_SECONDS;
-
-    const tx = await new ContractExecuteTransaction()
-      .setContractId(CONTRACT_ID)
-      .setGas(500_000)
-      .setFunction(
-        "addTodo",
-        new ContractFunctionParameters()
-          .addString(todoTitle)
-          .addString("")
-          .addUint256(dueDate)
-      )
-      .execute(client);
-
-    await tx.getReceipt(client);
-
-    toast.success("Todo added (expires in 1 week)");
-    setTodoTitle("");
-    fetchTodos();
-
+    const res = await fetch(url);
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("Mirror node error:", res.status, text);
+      return;
+    }
+    const data = await res.json();
+    if (data.transactions) {
+      setResults(data.transactions);
+    } else if (data.account) {
+      setResults([data]);
+    } else {
+      setResults([data]);
+    }
   } catch (err) {
-    console.error(err);
-    toast.error("Failed to add todo");
+    console.error("Search error:", err);
   }
 };
-  const updateTodoStatus = async (todoId: number, newStatus: Status) => {
-    if (!accountId || !privateKey) return;
+
+
+
+
+  const fetchHistory = async () => {
+
+    if (!accountId) return;
+
+    const accountRegex = /^0\.0\.\d+$/;
+
+    if (!accountRegex.test(accountId)) {
+      console.warn("Invalid accountId:", accountId);
+      return;
+    }
 
     try {
-      const client = createClient();
-      const statusValue = newStatus === "Active" ? 0 : 1;
 
-      const tx = await new ContractExecuteTransaction()
-        .setContractId(CONTRACT_ID)
-        .setGas(500_000)
-        .setFunction(
-          "updateStatus",
-          new ContractFunctionParameters().addUint256(todoId).addUint8(statusValue)
-        )
-        .execute(client);
+      // const url = `${baseURL}/accounts/${accountId}/transactions?limit=20&order=desc`;
+      const url = `${baseURL}/transactions?account.id=${accountId}&limit=20&order=desc`;
 
-      await tx.getReceipt(client);
-      fetchTodos();
+      const res = await fetch(url);
+
+      if (!res.ok) {
+        console.error("Mirror node error:", res.status);
+        return;
+      }
+
+      const data = await res.json();
+      console.log("data:", data);
+      setHistory(data.transactions || []);
+      console.log("Fetching history for:", accountId);
+
     } catch (err) {
-      toast.error("Update failed");
+
+      console.error("History fetch error:", err);
+
     }
+
   };
 
+
   useEffect(() => {
-    if (!accountId || !privateKey || !evmAddress) return;
-    fetchTodos();
-    const intervalId = setInterval(fetchTodos, 10000);
-    return () => clearInterval(intervalId);
-  }, [accountId, privateKey, evmAddress]);
+    fetchHistory();
+  }, [accountId, evmAddress, network]);
 
-  const filteredTodos = todos.filter(t => {
-    const now = Math.floor(Date.now() / 1000);
-    const isTimedOut = t.dueDate < now;
-
-    // Logic: In 'Active' tab, only show if Active and NOT timed out.
-    // In 'All' tab, show everything so the user can see Expired items to reactivate them.
-    if (activeFilter === "Active") return t.status === "Active" && !isTimedOut;
-    if (activeFilter === "Completed") return t.status === "Completed";
-    return true; 
-  });
+  /*
+  -----------------------
+  UI
+  -----------------------
+  */
 
   return (
-    <div className="todo-container">
-      <Link to="/ConnectWallet">
-            <img width="35" height="35" src="https://img.icons8.com/nolan/64/left.png" alt="left"/>
-      </Link>
-      <h2 className="header-title">Todo List</h2>
 
-      <div className="input-group">
+    <div className="dex-container">
+
+      <Link to="/ConnectWallet">← Back</Link>
+
+      <h2>Dex Scanner</h2>
+
+      {/* SEARCH BAR */}
+
+      <div className="top-bar">
+
+        <select
+          value={network}
+          onChange={(e) => setNetwork(e.target.value as any)}
+        >
+          <option value="testnet">Testnet</option>
+          <option value="mainnet">Mainnet</option>
+        </select>
+
         <input
-          type="text"
-          placeholder="Add a new task..."
-          value={todoTitle}
-          onChange={e => setTodoTitle(e.target.value)}
-          className="main-input"
+          placeholder="Search tx / account / evm..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
-        <button onClick={addTodo} className="add-btn">+</button>
+
+        <button onClick={searchQuery}>
+          Search
+        </button>
+
       </div>
 
-      <div className="tabs-container">
-        {["All", "Active", "Completed"].map(tab => (
-          <button
-            key={tab}
-            className={`tab-item ${activeFilter === tab ? "active-tab" : ""}`}
-            onClick={() => setActiveFilter(tab as any)}
-          >
-            {tab}
-          </button>
-        ))}
+      {/* TABS */}
+
+      <div className="tabs">
+
+        <button
+          className={tab === "results" ? "active" : ""}
+          onClick={() => setTab("results")}
+        >
+          Search Results
+        </button>
+
+        <button
+          className={tab === "history" ? "active" : ""}
+          onClick={() => setTab("history")}
+        >
+          History
+        </button>
+
       </div>
 
-      <div className="content-area">
-        {filteredTodos.length > 0 ? (
-          <div className="todo-list">
-            {filteredTodos.map(todo => {
-              const now = Math.floor(Date.now() / 1000);
-              const isTimedOut = todo.dueDate < now && todo.status === "Active";
-              const displayStatus = isTimedOut ? "Expired" : todo.status;
+      {/* RESULTS AREA */}
 
-              return (
-                <div key={todo.id} className={`todo-card ${displayStatus.toLowerCase()}`}>
-                  <div className="todo-info">
-                    <p className="todo-text">{todo.title}</p>
-                    <div className="todo-meta">
-                      <span className={`status-badge ${displayStatus.toLowerCase()}`}>
-                        {displayStatus}
-                      </span>
-                      <span className="due-date-display">
-                        Due: {new Date(todo.dueDate * 1000).toLocaleString()}
-                      </span>
-                    </div>
-                  </div>
-                  <input
-                    type="checkbox"
-                    className="checkbox"
-                    checked={todo.status === "Completed"}
-                    onChange={() =>
-                      updateTodoStatus(
-                        todo.id,
-                        todo.status === "Completed" ? "Active" : "Completed"
-                      )
-                    }
-                  />
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <p className="empty-state">No tasks found.</p>
-        )}
+      <div className="results-container">
+
+        {/* SEARCH RESULTS */}
+
+        {tab === "results" && results.length > 0 &&
+
+          results.map((item, i) => (
+
+            <div key={i} className="token-card">
+
+              <div>
+
+                {item.transaction_id && (
+                  <p><b>Tx:</b> {item.transaction_id}</p>
+                )}
+
+                {item.name && (
+                  <p><b>Operation:</b> {item.name}</p>
+                )}
+
+                {item.result && (
+                  <p><b>Status:</b> {item.result}</p>
+                )}
+
+                {item.consensus_timestamp && (
+                  <p><b>Time:</b> {item.consensus_timestamp}</p>
+                )}
+
+                {item.account && (
+                  <p><b>Account:</b> {item.account}</p>
+                )}
+
+              </div>
+
+            </div>
+
+          ))
+        }
+
+        {/* HISTORY */}
+
+        {tab === "history" && history.length > 0 &&
+
+          history.map((tx, i) => (
+
+            <div key={i} className="history-item">
+
+              <p><b>Tx:</b> {tx.transaction_id}</p>
+              <p><b>Operation:</b> {tx.name}</p>
+              <p><b>Status:</b> {tx.result}</p>
+              <p><b>Time:</b> {tx.consensus_timestamp}</p>
+
+              <div className="more">
+                more
+              </div>
+
+            </div>
+            
+
+          ))
+        }
+
+        {(tab === "results" && results.length === 0) ||
+        (tab === "history" && history.length === 0) ? (
+          <p>No data found</p>
+        ) : null}
+
       </div>
+
     </div>
   );
 };
 
-export default TodoApp;
+export default DexScan;
