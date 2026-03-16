@@ -1,19 +1,20 @@
 {
-  "homepage": "https://rocker-bell.github.io/SimpleNotes",
-  "name": "simple-notes",
+  "homepage": "https://rocker-bell.github.io/HashCompanion",
+  "name": "hash-companion",
   "private": true,
   "version": "0.0.0",
   "type": "module",
- "scripts": {
-  "dev": "vite",
-  "build": "tsc -b && vite build",
-  "build:ext": "tsc -b && vite build --mode extension",
-  "deploy": "gh-pages -d dist"
-},
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "build:ext": "tsc -b && vite build --mode extension",
+    "deploy": "gh-pages -d dist"
+  },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@hashgraph/sdk": "^2.80.0",
     "@tailwindcss/vite": "^4.1.16",
-    "alert-handler-lite": "file:../alert-test",
+    "alert-handler-lite": "file:../actives/alert-test",
     "ethers": "^6.16.0",
     "gh-pages": "^6.3.0",
     "react": "19.2.4",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@types/chrome": "^0.1.37",
     "@types/node": "^24.6.0",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",

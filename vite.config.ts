@@ -5,6 +5,6 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig(({ mode }) => {
   return {
     plugins: [react(), tailwindcss()],
-    base: mode === 'extension' ? './' : '/SimpleNotes/'
+    base: mode === 'extension' ? './' : '/HashCompanion/'
   }
 })

@@ -1,0 +1,62 @@
+.dex-container{
+  max-width:600px;
+  margin:auto;
+  padding:20px;
+}
+
+.top-bar{
+  display:flex;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.top-bar input{
+  flex:1;
+  padding:8px;
+}
+
+.tabs{
+  display:flex;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.tabs button{
+  padding:8px 15px;
+}
+
+.tabs .active{
+  background:#2b7cff;
+  color:white;
+}
+
+.results-container{
+  max-height:400px;
+  overflow-y:auto;
+  border:1px solid #ddd;
+  padding:10px;
+}
+
+.token-card{
+  display:flex;
+  justify-content:space-between;
+  flex-direction: column;
+  padding:10px;
+  border-bottom:1px solid #eee;
+}
+
+.history-item{
+  padding:8px;
+  cursor:pointer;
+}
+
+.more-class {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.more {
+  font-size: larger;
+}

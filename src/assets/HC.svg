@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60" width="120" height="60">
+  <!-- Background Rectangle -->
+  <rect width="120" height="60" rx="12" ry="12" fill="#00AEEF"/>
+  
+  <!-- H shape -->
+  <rect x="15" y="10" width="10" height="40" fill="white"/>
+  <rect x="45" y="10" width="10" height="40" fill="white"/>
+  <rect x="15" y="25" width="40" height="10" fill="white"/>
+  
+  <!-- C shape next to H -->
+  <path d="M75 50 A20 20 0 1 1 75 10" stroke="white" stroke-width="10" fill="none"/>
+</svg>

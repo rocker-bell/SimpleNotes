@@ -1,0 +1,37 @@
+mindmap
+  root((HashCompanion))
+
+    App.tsx
+      Router
+        DappStructure
+        CreateAccount
+        ConnectWallet
+        Myapps
+
+      UtilityApps
+        TodoApp
+        Chatbox
+        DexScan
+        HbarAccountManager
+        HCAIhelper
+
+    Components
+      CreateAccount.tsx
+      ConnectWallet.tsx
+      TodoApp.tsx
+      Chatbox.tsx
+      DexScan.tsx
+      HbarAccountManager.tsx
+      HCAIhelper.tsx
+      Myapps.tsx
+      DappStructure.tsx
+
+    Blockchain
+      HederaSDK
+      SolidityContracts
+      TodoListContract
+      MessagingContract
+
+    Storage
+      ChromeStorage
+      LocalStorage

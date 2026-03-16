@@ -1,6 +1,21 @@
+<!-- # HashCompanion
+
+Your Companion into web3 of hedera, Everything- One app.
+
+currently integrated dapp3
+
+
 # SimpleNotes
 
 Web3 Notes Application built on Hedera Hashgraph.
+
+# HashMessages
+
+Your way into the freedom of communication fully private and fully ownable
+
+# HCScanner
+
+find Infomation regarding your operation within the scope of the hedera network and search for other interactions...
 
 ---
 
@@ -8,7 +23,64 @@ Web3 Notes Application built on Hedera Hashgraph.
 
 SimpleNotes is a decentralized notes application that leverages blockchain technology for secure authentication and account management.
 
-The application removes reliance on centralized authentication servers and gives users ownership of their blockchain identity through Hedera-based account creation and wallet connection.
+The application removes reliance on centralized authentication servers and gives users ownership of their blockchain identity through Hedera-based account creation and wallet connection. -->
+
+
+# HashCompanion Suite 
+
+Welcome to **HashCompanion**, your gateway into the Web3 ecosystem on **Hedera Hashgraph**.  
+Everything you need — from notes and messaging to blockchain exploration — is now available in **one unified platform**.
+
+---
+
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| **Unified Wallet** | Connect and manage your Hedera wallet across all apps. |
+| **Secure Notes** | Create and store notes with full ownership on the blockchain. |
+| **Private Messaging** | End-to-end encrypted messaging with full user control. |
+| **Blockchain Explorer** | Track your transactions and account activity on Hedera. |
+| **Decentralized & Private** | No central servers — your data is fully yours. |
+
+---
+
+## Apps Overview
+
+### **HashCompanion**
+Your gateway to Web3 on Hedera — everything in one app.  
+Currently integrated with DApp3.
+
+**Overview:**  
+HashCompanion acts as a central hub for managing all your Hedera-based applications. Connect wallets, explore decentralized apps, and track your activity in one unified platform.
+
+---
+
+### **SimpleNotes**
+A decentralized notes application built on Hedera Hashgraph.  
+Secure, private, and fully owned by you.
+
+**Overview:**  
+SimpleNotes allows you to create, store, and manage notes directly on the blockchain. By removing centralized authentication, you maintain full control over your data and identity through Hedera wallet integration.
+
+---
+
+### **HashMessages**
+A private, fully ownable messaging platform — freedom of communication on the blockchain.
+
+**Overview:**  
+HashMessages enables secure, end-to-end encrypted messaging without reliance on central servers. All messages are tied to your Hedera account, giving you full ownership and privacy.
+
+---
+
+### **HCScanner**
+Explore and track your Hedera operations.  
+Search account activity and interactions across the network.
+
+**Overview:**  
+HCScanner is a blockchain explorer for your Hedera operations. Track transactions, inspect account activity, and explore interactions across the network — all from one application.
+
+---
 
 ---
 
@@ -119,23 +191,23 @@ Important: Never commit real private keys to version control.
 npm install
 ```
 
-### Run Development Server
+### Run Development Server for browser mode
 
 ```bash
 npm run dev
 ```
 
-### Build for Production
+### Build for Production browser mode
 
 ```bash
 npm run build
 ```
-
-### Preview Production Build
+### Build for Production extension mode
 
 ```bash
-npm run preview
+npm run build:ext
 ```
+
 
 ---
 

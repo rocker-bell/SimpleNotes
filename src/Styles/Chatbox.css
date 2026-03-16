@@ -1,0 +1,140 @@
+/* .chatbox-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  font-family: "Inter", sans-serif;
+  background: #0f172a;
+  color: #f1f5f9;
+  border-radius: 12px;
+} */
+
+.chatbox-container {
+    background: #0f172a;
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Header */
+
+.chatbox-container h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.status {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #38bdf8;
+}
+
+/* Inputs */
+
+.chatbox-container input,
+.chatbox-container textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #1e293b;
+  color: white;
+}
+
+.chatbox-container textarea {
+  min-height: 80px;
+  resize: none;
+}
+
+/* Buttons */
+
+.chatbox-container button {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #06b6d4, #6366f1);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.chatbox-container button:hover {
+  transform: scale(1.03);
+  opacity: 0.9;
+}
+
+/* Messages section */
+
+/* .messages-section {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+} */
+
+.messages-section {
+    color: white;
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 10px;
+  padding-right: 5px;
+}
+
+/* Message cards */
+
+/* .message-card {
+  background: #1e293b;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border-left: 4px solid #06b6d4;
+  font-size: 14px;
+}
+
+
+
+.sent-message {
+  border-left-color: #6366f1;
+}
+
+.received-message {
+  border-left-color: #22c55e;
+} */
+
+
+.message-card {
+  /* background: white; */
+   background: #1e293b;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  word-break: break-word;
+}
+
+.received-message {
+  border-left: 3px solid #4caf50;
+}
+
+.sent-message {
+  border-left: 3px solid #6c63ff;
+}
+
+/* Balance */
+
+.balance {
+  margin: 10px 0;
+  font-weight: bold;
+  color: #22c55e;
+}
+
+.registration-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}

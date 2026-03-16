@@ -9,14 +9,14 @@ const DappStructure = () => {
         <div className="logo-section">
           <div className="logo-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#F6851B"/>
-              <path d="M2 17L12 22L22 17" stroke="#F6851B" strokeWidth="2"/>
-              <path d="M2 12L12 17L22 12" stroke="#F6851B" strokeWidth="2"/>
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#4c1d95"/>
+<path d="M2 17L12 22L22 17" stroke="#3730a3" strokeWidth="2"/>
+<path d="M2 12L12 17L22 12" stroke="#312e81" strokeWidth="2"/>
             </svg>
           </div>
           <div className="logo-text">
-            <h1>SimpleNotes</h1>
-            <p className="tagline">Your Web3 Notes</p>
+            <h1>HashCompanion</h1>
+            <p className="tagline">Your Hedera Web3 Companion</p>
           </div>
         </div>
       </header>
@@ -24,9 +24,9 @@ const DappStructure = () => {
       {/* Connect Wallet Section */}
       <main className="dapp-main">
         <div className="welcome-section">
-          <h2>Welcome to SimpleNotes</h2>
+          <h2>Welcome to HashComapnion</h2>
           <p className="welcome-text">
-            Connect your wallet to start managing your notes on the blockchain.
+              Connect your wallet to begin managing your Hedera activity.
           </p>
         </div>
 
@@ -58,7 +58,7 @@ const DappStructure = () => {
 
         {/* Features */}
         <div className="features-section">
-          <h3>Why Choose SimpleNotes?</h3>
+          <h3>Why Choose HashCompanion?</h3>
           <div className="features-grid">
             <div className="feature-card">
               <div className="feature-icon">
@@ -67,7 +67,8 @@ const DappStructure = () => {
                 </svg>
               </div>
               <h4>Secure Storage</h4>
-              <p>Your notes are encrypted and stored on the blockchain</p>
+              {/* <p>All operations and information are cryptographically secured and anchored on the blockchain, preserving transparency and security.</p> */}
+              <p>Blockchain-secured and encrypted.</p>
             </div>
             <div className="feature-card">
               <div className="feature-icon">
@@ -78,7 +79,8 @@ const DappStructure = () => {
                 </svg>
               </div>
               <h4>Decentralized</h4>
-              <p>No central server - your data is truly yours</p>
+              {/* <p>Built on a decentralized network with no central server, giving you full control over your data and assets.</p> */}
+              <p>Fully decentralized. Fully yours.</p>
             </div>
             <div className="feature-card">
               <div className="feature-icon">
@@ -89,7 +91,8 @@ const DappStructure = () => {
                 </svg>
               </div>
               <h4>Access Anywhere</h4>
-              <p>Sync your notes across devices with your wallet</p>
+              <p>Everything, everywhere — one app.</p>
+              {/* <p>A unified platform that lets you access and manage everything from anywhere, all within one application.</p> */}
             </div>
           </div>
         </div>
@@ -98,11 +101,11 @@ const DappStructure = () => {
       {/* Footer */}
       <footer className="dapp-footer">
         <div className="footer-links">
-          <a href="#" className="footer-link">Documentation</a>
-          <a href="#" className="footer-link">GitHub</a>
-          <a href="#" className="footer-link">Support</a>
+          <Link  to="https://github.com/rocker-bell/SimpleNotes/tree/main-2/documentation"  className="footer-link">Documentation</Link>
+          <Link to="https://github.com/rocker-bell/SimpleNotes" className="footer-link">GitHub</Link>
+          <Link to="https://github.com/rocker-bell/SimpleNotes" className="footer-link">Support(⭐)</Link>
         </div>
-        <p className="copyright">© 2026 SimpleNotes. All rights reserved.</p>
+        <p className="copyright">© 2026 #HashCompanion. All rights reserved.</p>
       </footer>
     </div>
   );

@@ -21,7 +21,7 @@ const DexScan = ({ accountId, evmAddress }: DexScanProps) => {
       ? "https://mainnet.mirrornode.hedera.com/api/v1"
       : "https://testnet.mirrornode.hedera.com/api/v1";
 
-
+ 
 
 const searchQuery = async () => {
   if (!search) return;
@@ -65,8 +65,130 @@ const searchQuery = async () => {
   }
 };
 
+//   const searchQuery = async () => {
 
+//   if (!search) return;
 
+//   try {
+
+//     const accountRegex = /^0\.0\.\d+$/;
+//     const txRegex = /^0\.0\.\d+@\d+\.\d+$/;
+//     const evmRegex = /^0x[a-fA-F0-9]{40}$/;
+
+//     let url = "";
+
+//     if (txRegex.test(search)) {
+
+//       url = `${baseURL}/transactions?transactionId=${search}`;
+
+//     }
+//     else if (evmRegex.test(search)) {
+
+//       url = `${baseURL}/accounts?account.evm_address=${search}`;
+
+//     }
+//     else if (accountRegex.test(search)) {
+
+//       url = `${baseURL}/accounts/${search}/transactions?limit=10&order=desc`;
+
+//     }
+//     else {
+
+//       console.warn("Invalid search format");
+//       return;
+
+//     }
+
+//     const res = await fetch(url);
+
+//     const data = await res.json();
+
+//     if (data.transactions) {
+//       setResults(data.transactions);
+//     }
+//     else if (data.accounts) {
+//       setResults(data.accounts);
+//     }
+//     else {
+//       setResults([data]);
+//     }
+
+//   } catch (err) {
+
+//     console.error("Search error:", err);
+
+//   }
+// };
+
+//             const searchQuery = async () => {
+
+//   if (!search) return;
+
+//   try {
+
+//     const accountRegex = /^0\.0\.\d+$/;
+//     const txRegex = /^0\.0\.\d+@\d+\.\d+$/;
+//     const evmRegex = /^0x[a-fA-F0-9]{40}$/;
+
+//     let url = "";
+
+//     if (txRegex.test(search)) {
+
+//       url = `${baseURL}/transactions?transactionId=${search}`;
+
+//     }
+//     else if (evmRegex.test(search)) {
+
+//       url = `${baseURL}/accounts?account.evm_address=${search}`;
+
+//     }
+//     else if (accountRegex.test(search)) {
+
+//       url = `${baseURL}/accounts/${search}/transactions?limit=10&order=desc`;
+
+//     }
+//     else {
+
+//       console.warn("Invalid search format");
+//       return;
+
+//     }
+
+//     const res = await fetch(url);
+
+//     if (!res.ok) {
+//       console.error("Mirror node error:", res.status);
+//       return;
+//     }
+
+//     const data = await res.json();
+
+//     if (data.transactions) {
+
+//       setResults(data.transactions);
+
+//     } else if (data.accounts) {
+
+//       setResults(data.accounts);
+
+//     } else {
+
+//       setResults([data]);
+
+//     }
+
+//   } catch (err) {
+
+//     console.error("Search error:", err);
+
+//   }
+
+// };
+  /*
+  -----------------------
+  FETCH WALLET HISTORY
+  -----------------------
+  */
 
   const fetchHistory = async () => {
 
@@ -104,6 +226,10 @@ const searchQuery = async () => {
 
   };
 
+  
+  const getHashscanUrl = (txId: string) => {
+  return `https://hashscan.io/${network}/transaction/${txId}`;
+};
 
   useEffect(() => {
     fetchHistory();
@@ -203,6 +329,16 @@ const searchQuery = async () => {
 
               </div>
 
+              <div className="more-class">
+              <a
+  className="more"
+  href={getHashscanUrl(item.transaction_id)}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  more
+</a>  </div>
+
             </div>
 
           ))
@@ -221,11 +357,20 @@ const searchQuery = async () => {
               <p><b>Status:</b> {tx.result}</p>
               <p><b>Time:</b> {tx.consensus_timestamp}</p>
 
-              <div className="more">
-                more
-              </div>
+               <div className="more-class">
+              <a
+  className="more"
+  href={getHashscanUrl(tx.transaction_id)}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  more
+</a>
+            </div>
 
             </div>
+
+           
             
 
           ))
@@ -243,3 +388,4 @@ const searchQuery = async () => {
 };
 
 export default DexScan;
+
